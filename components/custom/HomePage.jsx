@@ -26,9 +26,11 @@ export default function HomePage() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {data?.data?.map((category) => (
         <div key={category.id} className="mb-4">
-          <Card className=" w-full  ">
+          <Card className="w-full rounded-md shadow-md">
+            {" "}
+            {/* Added shadow styling */}
             <CardHeader>
-              <CardTitle>{category?.name} related website are here</CardTitle>
+              <CardTitle>{category?.name} related websites are here</CardTitle>
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
@@ -48,16 +50,6 @@ export default function HomePage() {
           </Card>
         </div>
       ))}
-      {/* {categories[data].map((category) => (
-        <Card className=" w-full  ">
-          <CardHeader>
-            <CardTitle>Notifications</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Block />;
-          </CardContent>
-        </Card>
-      ))} */}
     </div>
   );
 }
