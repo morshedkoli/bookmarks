@@ -21,7 +21,36 @@ export default function HomePage() {
 
   const { data, error } = useSWR("/api/category", fetcher);
 
+  if (error) return <div>Error fetching data: {error.message}</div>;
+
+  if (!data) return <div>Loading...</div>;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {data.data.map((category) => (
+        <div key={category?.id} className="mb-4">
+          <Card className="w-full rounded-md shadow-md">
+            <CardHeader>
+              <CardTitle>{category?.name} related websites are here</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                {category?.websites?.map((website) => (
+                  <AccordionItem key={website?.id} value={website.id}>
+                    <AccordionTrigger>{website?.name}</AccordionTrigger>
+                    <AccordionContent>{website?.useFor}</AccordionContent>
+                    <AccordionContent>
+                      <Button asChild>
+                        <Link href={website?.link}>Visit</Link>
+                      </Button>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+        </div>
+      ))}
+    </div>
   );
 }
