@@ -27,22 +27,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-wrap gap-3 p-2">
-        {data?.map((cat, index) => (
-          <div
-            key={cat.id}
-            className="w-full md:w-1/3 lg:w-1/4   p-4 shadow-md"
-          >
-            <h2 className="text-2xl font-bold">{cat?.name} related</h2>
-            <hr />
-            <div className="mt-5">
-              {/* {cat.websites.map((website) => (
-                <h1>{website.name}</h1>
-              ))} */}
-            </div>
-          </div>
-        ))}
-      </div>
+      <div className="flex flex-wrap gap-3 p-2">hello</div>
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.map((category) => (
           <div key={category.id} className="mb-4">
