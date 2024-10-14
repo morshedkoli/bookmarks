@@ -19,10 +19,7 @@ import { Button } from "../ui/button";
 export default function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error } = useSWR(
-    "https://website-ashy-chi.vercel.app/api/category",
-    fetcher
-  );
+  const { data, error } = useSWR("/api/category", fetcher);
 
   if (error) return <div>Error fetching data: {error.message}</div>;
 
@@ -34,6 +31,7 @@ export default function HomePage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.map((category) => (
           <div key={category.id} className="mb-4">
+            console.log(category)
             <Card className="w-full rounded-md shadow-md">
               <CardHeader>
                 <CardTitle>{category.name} related websites are here</CardTitle>
