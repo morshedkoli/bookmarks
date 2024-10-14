@@ -29,7 +29,10 @@ export default function HomePage() {
     <>
       <div className="flex flex-wrap gap-3 p-2">
         {data?.map((cat, index) => (
-          <div className="w-full md:w-1/3 lg:w-1/4   p-4 shadow-md">
+          <div
+            key={cat.id}
+            className="w-full md:w-1/3 lg:w-1/4   p-4 shadow-md"
+          >
             <h2 className="text-2xl font-bold">{cat?.name} related</h2>
             <hr />
             <div className="mt-5">
