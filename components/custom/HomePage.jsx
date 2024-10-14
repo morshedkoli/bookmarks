@@ -33,9 +33,9 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold">{cat.name} related</h2>
             <hr />
             <div className="mt-5">
-              {cat.websites.map((website) => (
+              {/* {cat.websites.map((website) => (
                 <h1>{website.name}</h1>
-              ))}
+              ))} */}
             </div>
           </div>
         ))}
