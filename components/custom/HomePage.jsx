@@ -34,19 +34,11 @@ export default function HomePage() {
               <CardTitle>{category?.name} related websites are here</CardTitle>
             </CardHeader>
             <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                {category?.websites?.map((website) => (
-                  <AccordionItem key={website?.id} value={website.id}>
-                    <AccordionTrigger>{website?.name}</AccordionTrigger>
-                    <AccordionContent>{website?.useFor}</AccordionContent>
-                    <AccordionContent>
-                      <Button asChild>
-                        <Link href={website?.link}>Visit</Link>
-                      </Button>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              <Accordion
+                type="single"
+                collapsible
+                className="w-full"
+              ></Accordion>
             </CardContent>
           </Card>
         </div>
