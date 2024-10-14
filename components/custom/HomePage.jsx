@@ -16,10 +16,10 @@ import {
 import Link from "next/link";
 import { Button } from "../ui/button";
 
-export default function HomePage() {
+export default async function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error } = useSWR("/api/category", fetcher);
+  const { data, error } = await useSWR("/api/category", fetcher);
 
   if (error) return <div>Error fetching data: {error.message}</div>;
 
