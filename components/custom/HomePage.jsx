@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {data?.data?.map((category) => (
-        <div key={category.id} className="mb-4">
+        <div key={category?.id} className="mb-4">
           <Card className="w-full rounded-md shadow-md">
             {" "}
             {/* Added shadow styling */}
@@ -33,13 +33,13 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                {category.websites.map((website) => (
-                  <AccordionItem key={website.id} value={website.id}>
-                    <AccordionTrigger>{website.name}</AccordionTrigger>
-                    <AccordionContent>{website.useFor}</AccordionContent>
+                {category?.websites?.map((website) => (
+                  <AccordionItem key={website?.id} value={website.id}>
+                    <AccordionTrigger>{website?.name}</AccordionTrigger>
+                    <AccordionContent>{website?.useFor}</AccordionContent>
                     <AccordionContent>
                       <Button asChild>
-                        <Link href={website.link}>Visit</Link>
+                        <Link href={website?.link}>Visit</Link>
                       </Button>
                     </AccordionContent>
                   </AccordionItem>
