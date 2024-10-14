@@ -10,7 +10,7 @@ export async function GET(req, res) {
         websites: true,
       },
     });
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json(result);
   } catch (e) {
     return NextResponse.json({ status: "fail", data: e });
   }
