@@ -11,7 +11,7 @@ export default function page() {
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error, mutate } = useSWR(
+  const { data, error, isValidating } = useSWR(
     "/api/category/categoriesId",
     fetcher,
     {
@@ -39,8 +39,8 @@ export default function page() {
     });
 
     const result = await response.json();
-    console.log(result);
     setLoading(false);
+    isValidating(true);
 
     if (result.status === "success") {
       toast({
@@ -60,12 +60,7 @@ export default function page() {
   return (
     <div className="p-10">
       <h2 className="text-center text-3xl font-bold">Add New Website</h2>
-      <button
-        onClick={() => mutate()}
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Refresh Category
-      </button>
+
       {/* {data.map((website) => (
         <h2>{website.name}</h2>
       ))} */}
