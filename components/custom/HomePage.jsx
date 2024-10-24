@@ -27,14 +27,12 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-wrap gap-3 p-2">hello</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.map((category) => (
           <div key={category.id} className="mb-4">
-            console.log(category)
             <Card className="w-full rounded-md shadow-md">
               <CardHeader>
-                <CardTitle>{category.name} related websites are here</CardTitle>
+                <CardTitle>{category.name} এর সকল লিংক এইখানে</CardTitle>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">

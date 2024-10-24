@@ -4,9 +4,8 @@ import HomePage from "@/components/custom/HomePage";
 
 export default async function Home() {
   return (
-    <>
-      <MenubarApp />;
+    <div className="p-5">
       <HomePage />
-    </>
+    </div>
   );
 }

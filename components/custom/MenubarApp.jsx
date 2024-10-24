@@ -22,17 +22,17 @@ const MenubarApp = () => {
                 >
                   Home
                 </a>
-                <a
+                {/* <a
                   href="/"
                   className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                 >
                   Add Category
-                </a>
+                </a> */}
                 <a
                   href="/"
                   className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                 >
-                  Add Website
+                  যে কোন প্রয়োজনে- 01781981486
                 </a>
               </div>
             </div>

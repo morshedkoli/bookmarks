@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   font-family: Arial, Helvetica, sans-serif;
+} */
+@import url("https://fonts.maateen.me/adorsho-lipi/font.css");
+
+body {
+  font-family: "AdorshoLipi", Arial, sans-serif !important;
 }
 
 @layer utilities {
