@@ -19,8 +19,8 @@ import { Button } from "../ui/button";
 export default function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error } = useSWR("/api/category", fetcher, {
-    revalidateOnFocus: true,
+  const { data, error, mutate } = useSWR("/api/category", fetcher, {
+    refreshInterval: 5000,
   });
 
   if (error) return <div>Error fetching data: {error.message}</div>;
@@ -29,6 +29,14 @@ export default function HomePage() {
 
   return (
     <>
+      {/* <div className="mb-5">
+        <button
+          onClick={() => mutate()}
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Refresh
+        </button>
+      </div> */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.map((category) => (
           <div key={category.id} className="mb-4">
