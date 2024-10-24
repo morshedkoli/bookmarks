@@ -41,8 +41,10 @@ export default function HomePage() {
                       <AccordionTrigger>{website.name}</AccordionTrigger>
                       <AccordionContent>{website.useFor}</AccordionContent>
                       <AccordionContent>
-                        <Button asChild>
-                          <Link href={website.link}>Visit</Link>
+                        <Button asChild className="w-full text-2xl">
+                          <a target="_blank" href={website.link}>
+                            ওয়েব সাইটে যান 👆
+                          </a>
                         </Button>
                       </AccordionContent>
                     </AccordionItem>
