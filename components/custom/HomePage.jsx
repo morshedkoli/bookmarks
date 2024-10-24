@@ -20,7 +20,7 @@ export default function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
   const { data, error } = useSWR("/api/category", fetcher, {
-    refreshInterval: 60000,
+    revalidateOnFocus: true,
   });
 
   if (error) return <div>Error fetching data: {error.message}</div>;
