@@ -19,7 +19,9 @@ import { Button } from "../ui/button";
 export default function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error, isValidating } = useSWR("/api/category", fetcher);
+  const { data, error } = useSWR("/api/category", fetcher, {
+    refreshInterval: 60000,
+  });
 
   if (error) return <div>Error fetching data: {error.message}</div>;
 

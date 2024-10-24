@@ -11,10 +11,9 @@ export default function page() {
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const { data, error, isValidating } = useSWR(
-    "/api/category/categoriesId",
-    fetcher
-  );
+  const { data, error } = useSWR("/api/category/categoriesId", fetcher, {
+    refreshInterval: 60000,
+  });
   if (error) return <div>Error fetching data: {error.message}</div>;
 
   if (!data) return <div>Loading...</div>;
