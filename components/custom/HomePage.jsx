@@ -21,17 +21,22 @@ export default function HomePage() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
+  const fetchPosts = async () => {
+    const response = await fetch("/api/category", {
+      next: {
+        revalidate: 60, // 1 minute
+      },
+    });
+    const data = await response.json();
+    setData(data);
+  };
+
   useEffect(() => {
-    fetch("/api/category")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
+    fetchPosts();
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
+  if (!data) return <p>No data</p>;
 
   return (
     <>

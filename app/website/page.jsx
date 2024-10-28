@@ -10,13 +10,18 @@ export default function page() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
+  const fetchPosts = async () => {
+    const response = await fetch("/api/category/categoriesId", {
+      next: {
+        revalidate: 60, // 1 minute
+      },
+    });
+    const data = await response.json();
+    setData(data);
+  };
+
   useEffect(() => {
-    fetch("/api/category/categoriesId")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
+    fetchPosts();
   }, []);
 
   if (!data) return <p>Loading..</p>;
