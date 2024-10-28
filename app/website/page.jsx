@@ -38,8 +38,8 @@ export default function page() {
     });
 
     const result = await response.json();
+    console.log("result", result);
     setLoading(false);
-    isValidating(true);
 
     if (result.status === "success") {
       toast({
@@ -125,10 +125,12 @@ export default function page() {
             <select
               id="categoriesId"
               name="categoriesId"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              classname="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               {data?.map((website) => (
-                <option value={website.id}>{website.name}</option>
+                <span key={website.id}>
+                  <option value={website.id}>{website.name}</option>
+                </span>
               ))}
             </select>
           </div>
