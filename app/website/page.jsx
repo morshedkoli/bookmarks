@@ -1,26 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import useSWR from "swr";
 
 export default function page() {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const [data, setData] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-  const { data, error, isValidating } = useSWR(
-    "/api/category/categoriesId",
-    fetcher,
-    {
-      refreshInterval: 5000,
-    }
-  );
-  if (error) return <div>Error fetching data: {error.message}</div>;
+  useEffect(() => {
+    fetch("/api/category/categoriesId")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <p>Loading..</p>;
 
   const handleSubmit = async (event) => {
     setLoading(true);
@@ -152,7 +151,7 @@ export default function page() {
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          {loading ? "Loading" : "Submit"}
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>

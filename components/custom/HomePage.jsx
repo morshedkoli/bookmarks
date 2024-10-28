@@ -15,17 +15,23 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const [data, setData] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-  const { data, error, mutate } = useSWR("/api/category", fetcher, {
-    refreshInterval: 5000,
-  });
+  useEffect(() => {
+    fetch("/api/category")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
 
-  if (error) return <div>Error fetching data: {error.message}</div>;
-
-  if (!data) return <div>Loading...</div>;
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
 
   return (
     <>
