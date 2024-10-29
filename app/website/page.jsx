@@ -11,7 +11,10 @@ export default function page() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, error, isLoading, mutate } = useSWR(
     "/api/category/categoriesId",
-    fetcher
+    fetcher,
+    {
+      revalidateOnReconnect: true,
+    }
   );
 
   const handleRefresh = () => {
@@ -57,12 +60,6 @@ export default function page() {
   return (
     <div className="p-10">
       <h2 className="text-center text-3xl font-bold">Add New Website</h2>
-      <button
-        onClick={handleRefresh}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Refresh
-      </button>
 
       <br />
       <form onSubmit={handleSubmit}>

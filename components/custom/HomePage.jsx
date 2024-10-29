@@ -13,12 +13,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Link from "next/link";
 import { Button } from "../ui/button";
 
 export default function HomePage() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error, isLoading, mutate } = useSWR("/api/category", fetcher);
+  const { data, error, isLoading, mutate } = useSWR("/api/category", fetcher, {
+    revalidateOnReconnect: true,
+  });
 
   const handleRefresh = () => {
     mutate(); // Revalidate data
@@ -29,12 +30,6 @@ export default function HomePage() {
 
   return (
     <>
-      <button
-        onClick={handleRefresh}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Refresh
-      </button>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.map((category) => (
           <div key={category.id} className="mb-4">
