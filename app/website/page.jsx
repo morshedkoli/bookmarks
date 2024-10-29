@@ -1,28 +1,21 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import useSWR from "swr";
 
 export default function page() {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState(null);
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, error, isLoading, mutate } = useSWR(
+    "/api/category/categoriesId",
+    fetcher
+  );
 
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-
-  const fetchPosts = async () => {
-    const response = await fetch("/api/category/categoriesId", {
-      next: {
-        revalidate: 60, // 1 minute
-      },
-    });
-    const data = await response.json();
-    setData(data);
+  const handleRefresh = () => {
+    mutate(); // Revalidate data
   };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
   if (!data) return <p>Loading..</p>;
 
@@ -63,10 +56,13 @@ export default function page() {
   return (
     <div className="p-10">
       <h2 className="text-center text-3xl font-bold">Add New Website</h2>
+      <button
+        onClick={handleRefresh}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Refresh
+      </button>
 
-      {/* {data.map((website) => (
-        <h2>{website.name}</h2>
-      ))} */}
       <br />
       <form onSubmit={handleSubmit}>
         <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -129,7 +125,7 @@ export default function page() {
             <select
               id="categoriesId"
               name="categoriesId"
-              classname="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               {data?.map((website) => (
                 <option value={website.id}>{website.name}</option>

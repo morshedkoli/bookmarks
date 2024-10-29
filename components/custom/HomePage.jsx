@@ -15,26 +15,14 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, error, isLoading } = useSWR("/api/category", fetcher);
 
-  const fetchPosts = async () => {
-    const response = await fetch("/api/category", {
-      next: {
-        revalidate: 60, // 1 minute
-      },
-    });
-    const data = await response.json();
-    setData(data);
-    setLoading(false);
+  const handleRefresh = () => {
+    mutate(); // Revalidate data
   };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
