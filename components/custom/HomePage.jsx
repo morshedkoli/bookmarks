@@ -29,6 +29,7 @@ export default function HomePage() {
     });
     const data = await response.json();
     setData(data);
+    setLoading(false);
   };
 
   useEffect(() => {

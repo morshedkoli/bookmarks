@@ -43,7 +43,6 @@ export default function page() {
     });
 
     const result = await response.json();
-    console.log("result", result);
     setLoading(false);
 
     if (result.status === "success") {
