@@ -9,17 +9,13 @@ export default function page() {
 
   const [formData, setFormData] = useState(null);
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error, isLoading, mutate } = useSWR(
+  const { data, error, isLoading } = useSWR(
     "/api/category/categoriesId",
     fetcher,
     {
-      revalidateOnReconnect: true,
+      revalidateOnFocus: true,
     }
   );
-
-  const handleRefresh = () => {
-    mutate(); // Revalidate data
-  };
 
   if (!data) return <p>Loading..</p>;
 
