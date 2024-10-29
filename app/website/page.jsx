@@ -5,6 +5,7 @@ import useSWR from "swr";
 
 export default function page() {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState(null);
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
