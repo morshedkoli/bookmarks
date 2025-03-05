@@ -22,6 +22,18 @@ const MenubarApp = () => {
                 >
                   Home
                 </a>
+                <a
+                  href="/website"
+                  className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                >
+                  Add Website
+                </a>
+                <a
+                  href="/category"
+                  className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                >
+                  Add Category
+                </a>
                 {/* <a
                   href="/"
                   className="text-white hover:bg-white hover:text-black rounded-lg p-2"

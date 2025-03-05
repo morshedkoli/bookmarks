@@ -1,4 +1,5 @@
 "use client";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import useSWR from "swr";
@@ -9,16 +10,14 @@ export default function page() {
 
   const [formData, setFormData] = useState(null);
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isValidating, mutate } = useSWR(
     "/api/category/categoriesId",
-    fetcher,
-    {
-      revalidateOnFocus: true,
-    }
+    fetcher
   );
 
-  if (!data) return <p>Loading..</p>;
-
+  if (!data) return (
+    <LoadingSpinner/>
+  );
   const handleSubmit = async (event) => {
     setLoading(true);
     event.preventDefault();
@@ -43,6 +42,7 @@ export default function page() {
         title: "নতুন ওয়েবসাইট এড করা হয়েছে",
         description: "ধন্যবাদ",
       });
+      mutate('/api/category');
     }
 
     if (result.status === "fail") {
@@ -54,12 +54,11 @@ export default function page() {
   };
 
   return (
-    <div className="p-10">
-      <h2 className="text-center text-3xl font-bold">Add New Website</h2>
-
-      <br />
-      <form onSubmit={handleSubmit}>
-        <div className="grid gap-6 mb-6 md:grid-cols-2">
+    <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+        <h2 className="text-center text-3xl font-bold mb-8 text-gray-900 dark:text-white">Add New Website</h2>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid gap-8 md:grid-cols-2">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               ওয়েবসাইট নাম
@@ -69,7 +68,7 @@ export default function page() {
               id="name"
               name="name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
+              placeholder="ওয়েবসাইট নাম"
               required
             />
           </div>
@@ -82,7 +81,7 @@ export default function page() {
               id="link"
               name="link"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Doe"
+              placeholder="ওয়েবসাইট লিংক"
               required
             />
           </div>
@@ -95,7 +94,7 @@ export default function page() {
               id="useFor"
               name="useFor"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Flowbite"
+              placeholder="ওয়েব সাইট এর কাজ"
               required
             />
           </div>
@@ -108,7 +107,7 @@ export default function page() {
               id="icon"
               name="icon"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Flowbite"
+              placeholder="ওয়েব সাইট এর কাজ"
               required
             />
           </div>
@@ -135,19 +134,32 @@ export default function page() {
               id="password"
               name="password"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="123-45-678"
+              placeholder="পাসওয়ার্ড"
               required
             />
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          {loading ? "Loading..." : "Submit"}
-        </button>
-      </form>
+        <div className="col-span-full">
+            <button
+              type="submit"
+              className="w-full px-8 py-3 text-lg font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-colors duration-200"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                'Submit'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
