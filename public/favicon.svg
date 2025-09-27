@@ -1,0 +1,26 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="white" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Bookmark icon -->
+  <path d="M8 6C8 4.89543 8.89543 4 10 4H22C23.1046 4 24 4.89543 24 6V26L16 20L8 26V6Z" fill="white" />
+  
+  <!-- Star accent -->
+  <path d="M20 8L21 11H24L21.5 13L22.5 16L20 14L17.5 16L18.5 13L16 11H19L20 8Z" fill="#FCD34D" />
+  
+  <!-- Shine effect -->
+  <rect x="0" y="0" width="32" height="16" rx="8" fill="url(#shine)" opacity="0.3" />
+</svg>

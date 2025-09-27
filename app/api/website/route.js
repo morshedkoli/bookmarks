@@ -5,11 +5,24 @@ const prisma = new PrismaClient();
 
 export async function GET(req, res) {
   try {
-    const result = await prisma.category.findMany({
+    const { searchParams } = new URL(req.url);
+    const categoryId = searchParams.get('categoryId');
+    
+    let whereClause = {};
+    if (categoryId) {
+      whereClause.categoriesId = categoryId;
+    }
+
+    const result = await prisma.website.findMany({
+      where: whereClause,
       include: {
-        websites: true,
+        categorie: true,
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
+    
     return NextResponse.json({ status: "success", data: result });
   } catch (e) {
     return NextResponse.json({ status: "fail", data: e.message });
@@ -21,35 +34,52 @@ export async function POST(req, res) {
     const reqBody = await req.json();
     
     // Validate required fields
-    if (!reqBody.name || !reqBody.path || !reqBody.icon) {
+    if (!reqBody.name || !reqBody.link || !reqBody.categoriesId) {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Name, path, and icon are required" 
+        data: "Name, link, and category are required" 
+      });
+    }
+
+    if (reqBody.password !== "Murshed@@@k5") {
+      return NextResponse.json({ status: "fail", data: "Password Incorrect" });
+    }
+
+    // Verify category exists
+    const category = await prisma.category.findUnique({
+      where: { id: reqBody.categoriesId }
+    });
+
+    if (!category) {
+      return NextResponse.json({ 
+        status: "fail", 
+        data: "Category not found" 
       });
     }
 
     // Set default values for bilingual fields
     const nameEn = reqBody.nameEn || reqBody.name;
     const nameBn = reqBody.nameBn || reqBody.name;
-    const descriptionEn = reqBody.descriptionEn || reqBody.description;
-    const descriptionBn = reqBody.descriptionBn || reqBody.description;
+    const useForEn = reqBody.useForEn || reqBody.useFor;
+    const useForBn = reqBody.useForBn || reqBody.useFor;
 
-    if (reqBody.password !== "Murshed@@@k5") {
-      return NextResponse.json({ status: "fail", data: "Password Incorrect" });
-    }
-
-    const result = await prisma.category.create({
+    const result = await prisma.website.create({
       data: {
         name: reqBody.name,
         nameEn: nameEn,
         nameBn: nameBn,
-        path: reqBody.path,
-        icon: reqBody.icon,
-        description: reqBody.description || null,
-        descriptionEn: descriptionEn || null,
-        descriptionBn: descriptionBn || null,
-        password: reqBody.password
+        link: reqBody.link,
+        useFor: reqBody.useFor || "",
+        useForEn: useForEn || "",
+        useForBn: useForBn || "",
+        icon: reqBody.icon || "",
+        featured: reqBody.featured || false,
+        password: reqBody.password,
+        categoriesId: reqBody.categoriesId
       },
+      include: {
+        categorie: true
+      }
     });
     
     return NextResponse.json({ status: "success", data: result });
@@ -57,7 +87,7 @@ export async function POST(req, res) {
     if (e.code === 'P2002') {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Category name already exists" 
+        data: "Website name or link already exists" 
       });
     }
     return NextResponse.json({ status: "fail", data: e.message });
@@ -72,7 +102,7 @@ export async function PUT(req, res) {
     if (!id) {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Category ID is required" 
+        data: "Website ID is required" 
       });
     }
 
@@ -80,9 +110,26 @@ export async function PUT(req, res) {
       return NextResponse.json({ status: "fail", data: "Password Incorrect" });
     }
 
-    const result = await prisma.category.update({
+    // If categoriesId is being updated, verify it exists
+    if (updateData.categoriesId) {
+      const category = await prisma.category.findUnique({
+        where: { id: updateData.categoriesId }
+      });
+
+      if (!category) {
+        return NextResponse.json({ 
+          status: "fail", 
+          data: "Category not found" 
+        });
+      }
+    }
+
+    const result = await prisma.website.update({
       where: { id },
       data: updateData,
+      include: {
+        categorie: true
+      }
     });
     
     return NextResponse.json({ status: "success", data: result });
@@ -90,7 +137,13 @@ export async function PUT(req, res) {
     if (e.code === 'P2025') {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Category not found" 
+        data: "Website not found" 
+      });
+    }
+    if (e.code === 'P2002') {
+      return NextResponse.json({ 
+        status: "fail", 
+        data: "Website name or link already exists" 
       });
     }
     return NextResponse.json({ status: "fail", data: e.message });
@@ -106,7 +159,7 @@ export async function DELETE(req, res) {
     if (!id) {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Category ID is required" 
+        data: "Website ID is required" 
       });
     }
 
@@ -114,20 +167,7 @@ export async function DELETE(req, res) {
       return NextResponse.json({ status: "fail", data: "Password Incorrect" });
     }
 
-    // Check if category has websites
-    const category = await prisma.category.findUnique({
-      where: { id },
-      include: { websites: true }
-    });
-
-    if (category && category.websites.length > 0) {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Cannot delete category with existing websites" 
-      });
-    }
-
-    const result = await prisma.category.delete({
+    const result = await prisma.website.delete({
       where: { id },
     });
     
@@ -136,7 +176,7 @@ export async function DELETE(req, res) {
     if (e.code === 'P2025') {
       return NextResponse.json({ 
         status: "fail", 
-        data: "Category not found" 
+        data: "Website not found" 
       });
     }
     return NextResponse.json({ status: "fail", data: e.message });

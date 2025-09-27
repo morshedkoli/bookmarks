@@ -14,22 +14,32 @@ datasource db {
 }
 
 model Category {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String    @unique
-  path      String
-  icon      String
-  password  String
-  websites  Website[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  nameEn      String?
+  nameBn      String?
+  path        String
+  icon        String
+  description String?
+  descriptionEn String?
+  descriptionBn String?
+  password    String
+  websites    Website[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Website {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String @unique
+  nameEn   String?
+  nameBn   String?
   link     String @unique
   useFor   String
+  useForEn String?
+  useForBn String?
   icon     String
+  featured Boolean @default(false)
   password String
 
   categoriesId String   @db.ObjectId()
