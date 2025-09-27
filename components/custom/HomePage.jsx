@@ -215,51 +215,119 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Popular Sites Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6">
+      {/* Most Popular AI Section */}
+      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="h-6 w-6 text-blue-500" />
-          <h2 className="text-2xl font-bold text-gray-900">{isEnglish ? 'Most Popular Sites' : 'সবচেয়ে জনপ্রিয় সাইট'}</h2>
+          <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center">
+            <span className="text-white text-sm font-bold">AI</span>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900">{isEnglish ? 'Most Popular AI Tools' : 'সবচেয়ে জনপ্রিয় এআই টুলস'}</h2>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           {[
-            { name: 'Google', icon: 'https://www.google.com/favicon.ico', url: 'https://www.google.com' },
-            { name: 'YouTube', icon: 'https://www.youtube.com/favicon.ico', url: 'https://www.youtube.com' },
-            { name: 'Facebook', icon: 'https://www.facebook.com/favicon.ico', url: 'https://www.facebook.com' },
-            { name: 'Twitter', icon: 'https://twitter.com/favicon.ico', url: 'https://twitter.com' },
-            { name: 'Instagram', icon: 'https://www.instagram.com/favicon.ico', url: 'https://www.instagram.com' },
-            { name: 'LinkedIn', icon: 'https://www.linkedin.com/favicon.ico', url: 'https://www.linkedin.com' },
-            { name: 'GitHub', icon: 'https://github.com/favicon.ico', url: 'https://github.com' },
-            { name: 'Amazon', icon: 'https://www.amazon.com/favicon.ico', url: 'https://www.amazon.com' },
-            { name: 'Netflix', icon: 'https://www.netflix.com/favicon.ico', url: 'https://www.netflix.com' },
-            { name: 'Wikipedia', icon: 'https://www.wikipedia.org/favicon.ico', url: 'https://www.wikipedia.org' },
-            { name: 'Reddit', icon: 'https://www.reddit.com/favicon.ico', url: 'https://www.reddit.com' },
-            { name: 'Stack Overflow', icon: 'https://stackoverflow.com/favicon.ico', url: 'https://stackoverflow.com' }
-          ].map((site) => (
+            { 
+              name: isEnglish ? 'ChatGPT' : 'চ্যাটজিপিটি', 
+              icon: 'https://chat.openai.com/favicon.ico', 
+              url: 'https://chat.openai.com',
+              description: isEnglish ? 'AI Conversational Assistant' : 'এআই কথোপকথন সহায়ক'
+            },
+            { 
+              name: isEnglish ? 'Claude' : 'ক্লড', 
+              icon: 'https://claude.ai/favicon.ico', 
+              url: 'https://claude.ai',
+              description: isEnglish ? 'Anthropic AI Assistant' : 'অ্যানথ্রোপিক এআই সহায়ক'
+            },
+            { 
+              name: isEnglish ? 'Google Gemini' : 'গুগল জেমিনি', 
+              icon: 'https://gemini.google.com/favicon.ico', 
+              url: 'https://gemini.google.com',
+              description: isEnglish ? 'Google AI Assistant' : 'গুগল এআই সহায়ক'
+            },
+            { 
+              name: isEnglish ? 'GitHub Copilot' : 'গিটহাব কোপাইলট', 
+              icon: 'https://github.com/favicon.ico', 
+              url: 'https://github.com/features/copilot',
+              description: isEnglish ? 'AI Code Assistant' : 'এআই কোড সহায়ক'
+            },
+            { 
+              name: isEnglish ? 'Midjourney' : 'মিডজার্নি', 
+              icon: 'https://www.midjourney.com/favicon.ico', 
+              url: 'https://www.midjourney.com',
+              description: isEnglish ? 'AI Image Generator' : 'এআই ইমেজ জেনারেটর'
+            },
+            { 
+              name: isEnglish ? 'Perplexity' : 'পারপ্লেক্সিটি', 
+              icon: 'https://www.perplexity.ai/favicon.ico', 
+              url: 'https://www.perplexity.ai',
+              description: isEnglish ? 'AI Search Engine' : 'এআই সার্চ ইঞ্জিন'
+            },
+            { 
+              name: isEnglish ? 'Runway ML' : 'রানওয়ে এমএল', 
+              icon: 'https://runwayml.com/favicon.ico', 
+              url: 'https://runwayml.com',
+              description: isEnglish ? 'AI Video Generator' : 'এআই ভিডিও জেনারেটর'
+            },
+            { 
+              name: isEnglish ? 'Notion AI' : 'নোশন এআই', 
+              icon: 'https://www.notion.so/favicon.ico', 
+              url: 'https://www.notion.so',
+              description: isEnglish ? 'AI-Powered Workspace' : 'এআই-চালিত কর্মক্ষেত্র'
+            },
+            { 
+              name: isEnglish ? 'Jasper AI' : 'জ্যাসপার এআই', 
+              icon: 'https://www.jasper.ai/favicon.ico', 
+              url: 'https://www.jasper.ai',
+              description: isEnglish ? 'AI Content Creator' : 'এআই কন্টেন্ট ক্রিয়েটর'
+            },
+            { 
+              name: isEnglish ? 'Canva AI' : 'ক্যানভা এআই', 
+              icon: 'https://www.canva.com/favicon.ico', 
+              url: 'https://www.canva.com',
+              description: isEnglish ? 'AI Design Tool' : 'এআই ডিজাইন টুল'
+            },
+            { 
+              name: isEnglish ? 'Grammarly' : 'গ্রামারলি', 
+              icon: 'https://www.grammarly.com/favicon.ico', 
+              url: 'https://www.grammarly.com',
+              description: isEnglish ? 'AI Writing Assistant' : 'এআই লেখার সহায়ক'
+            },
+            { 
+              name: isEnglish ? 'Replicate' : 'রেপ্লিকেট', 
+              icon: 'https://replicate.com/favicon.ico', 
+              url: 'https://replicate.com',
+              description: isEnglish ? 'AI Model Platform' : 'এআই মডেল প্ল্যাটফর্ম'
+            }
+          ].map((aiTool) => (
             <a
-              key={site.name}
-              href={site.url}
+              key={aiTool.name}
+              href={aiTool.url}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-white/70 transition-all duration-200 hover:shadow-md hover:scale-105"
+              title={aiTool.description}
             >
-              <div className="w-8 h-8 rounded-lg overflow-hidden bg-white shadow-sm flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center border border-purple-100">
                 <img 
-                  src={site.icon} 
-                  alt={site.name}
+                  src={aiTool.icon} 
+                  alt={aiTool.name}
                   className="w-6 h-6 object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'flex';
                   }}
                 />
-                <div className="w-6 h-6 bg-gray-200 flex items-center justify-center text-gray-400 text-xs" style={{display: 'none'}}>
-                  <Globe className="w-4 h-4" />
+                <div className="w-6 h-6 bg-gradient-to-r from-purple-100 to-indigo-100 flex items-center justify-center text-purple-500 text-xs rounded-lg" style={{display: 'none'}}>
+                  <span className="font-bold">AI</span>
                 </div>
               </div>
-              <span className="text-xs font-medium text-gray-700 group-hover:text-blue-600 transition-colors text-center">
-                {site.name}
-              </span>
+              <div className="text-center">
+                <span className="text-xs font-medium text-gray-700 group-hover:text-purple-600 transition-colors block">
+                  {aiTool.name}
+                </span>
+                <span className="text-xs text-gray-500 group-hover:text-purple-500 transition-colors block mt-1">
+                  {aiTool.description}
+                </span>
+              </div>
             </a>
           ))}
         </div>
