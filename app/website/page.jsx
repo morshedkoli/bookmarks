@@ -9,7 +9,7 @@ export default function page() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState(null);
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = (...args) => fetch(...args, { cache: 'no-store' }).then((res) => res.json());
   const { data, error, isValidating, mutate } = useSWR(
     "/api/category/categoriesId",
     fetcher
@@ -28,6 +28,7 @@ export default function page() {
     // Optionally, send the data to an API endpoint
     const response = await fetch("/api/website/create", {
       method: "POST",
+      cache: 'no-store',
       body: JSON.stringify(formValues),
       headers: {
         "Content-Type": "application/json",

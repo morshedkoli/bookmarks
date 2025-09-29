@@ -31,6 +31,7 @@ export default function HomePage() {
   const { getCategoryName, getCategoryDescription, getWebsiteName, getWebsiteDescription, isEnglish, language } = useLanguage();
 
   const fetcher = (url) => fetch(url, {
+    cache: 'no-store',
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',

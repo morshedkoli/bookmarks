@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+export const dynamic = 'force-dynamic';
 
 export async function GET(req, res) {
   try {
@@ -17,8 +17,12 @@ export async function GET(req, res) {
       }
     });
     
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json({ status: "success", data: result }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   } catch (e) {
-    return NextResponse.json({ status: "fail", data: e.message });
+    return NextResponse.json({ status: "fail", data: e.message }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }

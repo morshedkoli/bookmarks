@@ -69,7 +69,9 @@ export default function WebsiteManagement() {
 
   const fetchWebsites = async () => {
     try {
-      const response = await fetch("/api/website");
+      const response = await fetch("/api/website", {
+        cache: 'no-store'
+      });
       const data = await response.json();
       if (data.status === "success") {
         setWebsites(data.data);
@@ -93,7 +95,9 @@ export default function WebsiteManagement() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/category");
+      const response = await fetch("/api/category", {
+        cache: 'no-store'
+      });
       const data = await response.json();
       if (data.status === "success") {
         setCategories(data.data);
@@ -124,6 +128,7 @@ export default function WebsiteManagement() {
 
       const response = await fetch(url, {
         method,
+        cache: 'no-store',
         headers: {
           "Content-Type": "application/json",
         },
@@ -183,6 +188,7 @@ export default function WebsiteManagement() {
         `/api/website?id=${website.id}&password=Murshed@@@k5`,
         {
           method: "DELETE",
+          cache: 'no-store'
         }
       );
 

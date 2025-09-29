@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+export const dynamic = 'force-dynamic';
 
 export async function GET(req, res) {
   try {
@@ -10,9 +10,13 @@ export async function GET(req, res) {
         websites: true,
       },
     });
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json({ status: "success", data: result }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   } catch (e) {
-    return NextResponse.json({ status: "fail", data: e.message });
+    return NextResponse.json({ status: "fail", data: e.message }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }
 
@@ -25,6 +29,8 @@ export async function POST(req, res) {
       return NextResponse.json({ 
         status: "fail", 
         data: "Name, path, and icon are required" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
 
@@ -35,7 +41,9 @@ export async function POST(req, res) {
     const descriptionBn = reqBody.descriptionBn || reqBody.description;
 
     if (reqBody.password !== "Murshed@@@k5") {
-      return NextResponse.json({ status: "fail", data: "Password Incorrect" });
+      return NextResponse.json({ status: "fail", data: "Password Incorrect" }, {
+        headers: { 'Cache-Control': 'no-store' }
+      });
     }
 
     const result = await prisma.category.create({
@@ -52,15 +60,21 @@ export async function POST(req, res) {
       },
     });
     
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json({ status: "success", data: result }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   } catch (e) {
     if (e.code === 'P2002') {
       return NextResponse.json({ 
         status: "fail", 
         data: "Category name already exists" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
-    return NextResponse.json({ status: "fail", data: e.message });
+    return NextResponse.json({ status: "fail", data: e.message }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }
 
@@ -73,11 +87,15 @@ export async function PUT(req, res) {
       return NextResponse.json({ 
         status: "fail", 
         data: "Category ID is required" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
 
     if (password !== "Murshed@@@k5") {
-      return NextResponse.json({ status: "fail", data: "Password Incorrect" });
+      return NextResponse.json({ status: "fail", data: "Password Incorrect" }, {
+        headers: { 'Cache-Control': 'no-store' }
+      });
     }
 
     const result = await prisma.category.update({
@@ -85,15 +103,21 @@ export async function PUT(req, res) {
       data: updateData,
     });
     
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json({ status: "success", data: result }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   } catch (e) {
     if (e.code === 'P2025') {
       return NextResponse.json({ 
         status: "fail", 
         data: "Category not found" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
-    return NextResponse.json({ status: "fail", data: e.message });
+    return NextResponse.json({ status: "fail", data: e.message }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }
 
@@ -107,11 +131,15 @@ export async function DELETE(req, res) {
       return NextResponse.json({ 
         status: "fail", 
         data: "Category ID is required" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
 
     if (password !== "Murshed@@@k5") {
-      return NextResponse.json({ status: "fail", data: "Password Incorrect" });
+      return NextResponse.json({ status: "fail", data: "Password Incorrect" }, {
+        headers: { 'Cache-Control': 'no-store' }
+      });
     }
 
     // Check if category has websites
@@ -124,6 +152,8 @@ export async function DELETE(req, res) {
       return NextResponse.json({ 
         status: "fail", 
         data: "Cannot delete category with existing websites" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
 
@@ -131,14 +161,20 @@ export async function DELETE(req, res) {
       where: { id },
     });
     
-    return NextResponse.json({ status: "success", data: result });
+    return NextResponse.json({ status: "success", data: result }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   } catch (e) {
     if (e.code === 'P2025') {
       return NextResponse.json({ 
         status: "fail", 
         data: "Category not found" 
+      }, {
+        headers: { 'Cache-Control': 'no-store' }
       });
     }
-    return NextResponse.json({ status: "fail", data: e.message });
+    return NextResponse.json({ status: "fail", data: e.message }, {
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }
