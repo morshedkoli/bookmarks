@@ -7,11 +7,25 @@ export async function GET(req, res) {
   try {
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get('categoryId');
-    
+
     let whereClause = {};
     if (categoryId) {
       whereClause.categoriesId = categoryId;
     }
+
+    // Support filtering by IDs (comma separated)
+    const ids = searchParams.get('ids');
+    if (ids) {
+      const idList = ids.split(',').filter(Boolean);
+      whereClause.id = { in: idList };
+    }
+
+    // Support filtering by popular
+    const popular = searchParams.get('popular');
+    if (popular === 'true') {
+      whereClause.popular = true;
+    }
+
 
     const result = await prisma.website.findMany({
       where: whereClause,
@@ -22,7 +36,7 @@ export async function GET(req, res) {
         createdAt: 'desc'
       }
     });
-    
+
     return NextResponse.json({ status: "success", data: result }, {
       headers: { 'Cache-Control': 'no-store' }
     });
@@ -36,12 +50,12 @@ export async function GET(req, res) {
 export async function POST(req, res) {
   try {
     const reqBody = await req.json();
-    
+
     // Validate required fields
     if (!reqBody.name || !reqBody.link || !reqBody.categoriesId) {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Name, link, and category are required" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Name, link, and category are required"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -59,9 +73,9 @@ export async function POST(req, res) {
     });
 
     if (!category) {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Category not found" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Category not found"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -84,22 +98,30 @@ export async function POST(req, res) {
         useForBn: useForBn || "",
         icon: reqBody.icon || "",
         featured: reqBody.featured || false,
+        popular: reqBody.popular || false,
         password: reqBody.password,
+        group: reqBody.group || null,
+        groupBn: reqBody.groupBn || null,
+        // Advanced Travel Directory Fields
+        countryId: reqBody.countryId || null,
+        subGroup: reqBody.subGroup || null,
+        isOfficial: reqBody.isOfficial || false,
         categoriesId: reqBody.categoriesId
       },
       include: {
-        categorie: true
+        categorie: true,
+        country: true
       }
     });
-    
+
     return NextResponse.json({ status: "success", data: result }, {
       headers: { 'Cache-Control': 'no-store' }
     });
   } catch (e) {
     if (e.code === 'P2002') {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website name or link already exists" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website name or link already exists"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -114,11 +136,11 @@ export async function PUT(req, res) {
   try {
     const reqBody = await req.json();
     const { id, password, ...updateData } = reqBody;
-    
+
     if (!id) {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website ID is required" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website ID is required"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -137,9 +159,9 @@ export async function PUT(req, res) {
       });
 
       if (!category) {
-        return NextResponse.json({ 
-          status: "fail", 
-          data: "Category not found" 
+        return NextResponse.json({
+          status: "fail",
+          data: "Category not found"
         }, {
           headers: { 'Cache-Control': 'no-store' }
         });
@@ -153,23 +175,23 @@ export async function PUT(req, res) {
         categorie: true
       }
     });
-    
+
     return NextResponse.json({ status: "success", data: result }, {
       headers: { 'Cache-Control': 'no-store' }
     });
   } catch (e) {
     if (e.code === 'P2025') {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website not found" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website not found"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
     }
     if (e.code === 'P2002') {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website name or link already exists" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website name or link already exists"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -185,11 +207,11 @@ export async function DELETE(req, res) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     const password = searchParams.get('password');
-    
+
     if (!id) {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website ID is required" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website ID is required"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });
@@ -204,15 +226,15 @@ export async function DELETE(req, res) {
     const result = await prisma.website.delete({
       where: { id },
     });
-    
+
     return NextResponse.json({ status: "success", data: result }, {
       headers: { 'Cache-Control': 'no-store' }
     });
   } catch (e) {
     if (e.code === 'P2025') {
-      return NextResponse.json({ 
-        status: "fail", 
-        data: "Website not found" 
+      return NextResponse.json({
+        status: "fail",
+        data: "Website not found"
       }, {
         headers: { 'Cache-Control': 'no-store' }
       });

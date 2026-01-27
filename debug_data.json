@@ -1,0 +1,253 @@
+{
+  "total": 41,
+  "categories": [
+    {
+      "id": "671a9052e7df4fd11275d6cc",
+      "name": "Identity Documents",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "671a952e25826f59e665609f",
+      "name": "Travel & Immigration",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "671a96e52bdd72bc5ddec0f5",
+      "name": "Artificial Inteligent",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "671a9e04054f461e360da023",
+      "name": "Birth Registration",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "671d30a69752980505b25e74",
+      "name": "PDF & Document Tools",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "671d30cd213415cdb5ef8d4e",
+      "name": "Education Results",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "673c1a08cbc8e7dc41032f18",
+      "name": "Online Payments",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3858549482567188f0",
+      "name": "Development Tools",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3858549482567188f1",
+      "name": "Social Media",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3958549482567188f2",
+      "name": "Education & Learning",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3a58549482567188f3",
+      "name": "News & Media",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3b58549482567188f4",
+      "name": "E-commerce & Shopping",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3c58549482567188f5",
+      "name": "Finance & Banking",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3d58549482567188f6",
+      "name": "Health & Fitness",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3e58549482567188f7",
+      "name": "Travel & Tourism",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c3f58549482567188f8",
+      "name": "Food & Recipes",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4058549482567188f9",
+      "name": "Business & Professional",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4158549482567188fa",
+      "name": "Technology & Gadgets",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4258549482567188fb",
+      "name": "Design & Creative",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4358549482567188fc",
+      "name": "Sports & Recreation",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4458549482567188fd",
+      "name": "Government & Legal",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4558549482567188fe",
+      "name": "Science & Research",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4658549482567188ff",
+      "name": "Photography & Media",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c465854948256718900",
+      "name": "Gaming",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c475854948256718901",
+      "name": "Music & Audio",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c485854948256718902",
+      "name": "Real Estate",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c495854948256718903",
+      "name": "Automotive",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4a5854948256718904",
+      "name": "Fashion & Beauty",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4b5854948256718905",
+      "name": "Home & Garden",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4c5854948256718906",
+      "name": "Utilities & Tools",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4d5854948256718907",
+      "name": "Cloud Services",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4e5854948256718908",
+      "name": "Communication",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c4f5854948256718909",
+      "name": "Reference & Documentation",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c50585494825671890a",
+      "name": "Job Search & Career",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c51585494825671890b",
+      "name": "Nonprofit & Charity",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "68d78c52585494825671890c",
+      "name": "Miscellaneous",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "69775b18e36d71317035f90c",
+      "name": "Government Services (BD)",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "69775b21e36d71317035f911",
+      "name": "Visa & Immigration",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "69775b29e36d71317035f918",
+      "name": "Online Business Tools",
+      "parentId": null,
+      "typeOfParentId": "object"
+    },
+    {
+      "id": "6977601340b84586fcf5afc6",
+      "name": "Utility Bills",
+      "parentId": "69775b18e36d71317035f90c",
+      "typeOfParentId": "string"
+    },
+    {
+      "id": "6977601540b84586fcf5afc7",
+      "name": "Education Board",
+      "parentId": "69775b18e36d71317035f90c",
+      "typeOfParentId": "string"
+    }
+  ],
+  "roots": 0,
+  "roots_missing": 39
+}

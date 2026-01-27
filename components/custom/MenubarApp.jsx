@@ -5,76 +5,62 @@ import { Menu, X, Phone } from "lucide-react";
 import { LanguageToggleIcon } from "@/components/ui/language-toggle";
 import Logo from "@/components/ui/logo";
 import Link from "next/link";
+import Sidebar from "./Sidebar";
+import { Button } from "../ui/button";
 
-const MenubarApp = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const MenubarApp = ({ onToggleSidebar, isSidebarOpen }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo/Brand */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <a
-                href="https://facebook.com/murshedkoli"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:opacity-80 transition-opacity"
-              >
-                <Logo size="small" variant="full" />
-              </a>
-            </div>
+    <nav className="bg-white border-b border-gray-200 h-16 sticky top-0 z-30 w-full">
+      <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Toggle button (Visible on Desktop now too for sidebar toggle) */}
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggleSidebar || (() => setIsMobileMenuOpen(!isMobileMenuOpen))}
+            className="text-gray-500 mr-2"
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
+          <div className="md:hidden">
+            {/* Mobile specific logic if needed, but the main button serves both if handled by parent */}
           </div>
+        </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Language Toggle */}
-            <LanguageToggleIcon />
-            
-            {/* Contact Info */}
-            <a
-              href="tel:01781981486"
-              className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors duration-200"
-            >
-              <Phone className="h-4 w-4 mr-2" />
-              <span className="hidden lg:inline">যে কোন প্রয়োজনে:</span>
-              <span className="lg:ml-1">01781981486</span>
-            </a>
-          </div>
+        <div className="flex items-center space-x-2 ml-auto">
+          <LanguageToggleIcon />
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-200"
-            >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+          <a
+            href="tel:01781981486"
+            className="flex items-center px-3 py-2 rounded-full bg-green-50 text-green-700 hover:bg-green-100 transition-colors text-sm font-medium"
+          >
+            <Phone className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">01781981486</span>
+          </a>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {/* Mobile Contact */}
-            <a
-              href="tel:01781981486"
-              className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors duration-200"
-              onClick={() => setIsOpen(false)}
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="relative w-[300px] max-w-[85vw] h-full bg-white shadow-xl animate-in slide-in-from-left duration-300">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-2 z-50 text-gray-500"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <Phone className="h-5 w-5 mr-3" />
-              <div className="flex flex-col">
-                <span className="text-sm">যে কোন প্রয়োজনে</span>
-                <span className="font-semibold">01781981486</span>
-              </div>
-            </a>
+              <X className="h-5 w-5" />
+            </Button>
+            <div className="h-full overflow-y-auto">
+              <Sidebar className="border-none w-full min-h-full" />
+            </div>
           </div>
         </div>
       )}

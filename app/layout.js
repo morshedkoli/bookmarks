@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import MenubarApp from "@/components/custom/MenubarApp";
+import AppLayout from "@/components/custom/AppLayout";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
@@ -38,8 +38,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LanguageProvider>
-          <MenubarApp />
-          {children}
+          <AppLayout>
+            {children}
+          </AppLayout>
           <Toaster />
         </LanguageProvider>
       </body>

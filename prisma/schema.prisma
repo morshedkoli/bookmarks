@@ -24,7 +24,14 @@ model Category {
   descriptionEn String?
   descriptionBn String?
   password    String
+  
+  // Hierarchy
+  parentId    String?   @db.ObjectId
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children    Category[] @relation("CategoryHierarchy")
+
   websites    Website[]
+  countries   Country[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -41,9 +48,40 @@ model Website {
   icon     String
   featured Boolean @default(false)
   password String
+  popular  Boolean @default(false)
+  
+  group    String?
+  groupBn  String?
 
   categoriesId String   @db.ObjectId()
   categorie    Category @relation(fields: [categoriesId], references: [id])
+  
+  // New fields for Advanced Travel Directory
+  countryId    String?  @db.ObjectId
+  country      Country? @relation(fields: [countryId], references: [id])
+  subGroup     String?  // Embassy, Visa, Work, etc.
+  isOfficial   Boolean  @default(false)
+  
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Country {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  nameBn      String?
+  slug        String    @unique
+  code        String?   // ISO code for flag or just icon url
+  icon        String?
+  description String?
+  descriptionBn String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  
+  categoryId  String    @db.ObjectId
+  category    Category  @relation(fields: [categoryId], references: [id])
+  
+  websites    Website[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
