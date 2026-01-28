@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Sidebar from "@/components/custom/Sidebar";
 import MenubarApp from "@/components/custom/MenubarApp";
 
@@ -14,7 +14,9 @@ export default function AppLayout({ children }) {
                 className={`hidden md:block shrink-0 transition-all duration-300 ease-in-out border-r border-gray-200 bg-white ${isSidebarOpen ? 'w-72 opacity-100' : 'w-0 opacity-0 overflow-hidden'
                     }`}
             >
-                <Sidebar className="h-full" />
+                <Suspense fallback={<div className="h-full w-full bg-white loading-sidebar" />}>
+                    <Sidebar className="h-full" />
+                </Suspense>
             </div>
 
             {/* Main Content Area */}
