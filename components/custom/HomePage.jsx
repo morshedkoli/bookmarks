@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import {
   ExternalLink,
@@ -27,6 +28,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Helper: flatten all websites from categories
+function flattenWebsites(categories) {
+  const all = [];
+  categories.forEach(cat => {
+    if (cat.websites) all.push(...cat.websites);
+    if (cat.children) cat.children.forEach(sub => {
+      if (sub.websites) all.push(...sub.websites);
+    });
+    if (cat.countries) cat.countries.forEach(country => {
+      if (country.websites) all.push(...country.websites);
+    });
+  });
+  return all;
+}
 export default function HomePage() {
   const searchParams = useSearchParams();
   const showPopular = searchParams.get('popular') === 'true';
@@ -55,6 +70,13 @@ export default function HomePage() {
   );
 
   const isLoading = isCategoryLoading || isFeaturedLoading || (showPopular && isPopularLoading);
+  const [search, setSearch] = useState("");
+
+  // Sync search state with URL `q` parameter (so top menubar search works)
+  useEffect(() => {
+    const q = searchParams.get('q') || "";
+    setSearch(q);
+  }, [searchParams]);
 
   // --- FAVORITES LOGIC ---
   const [favorites, setFavorites] = useState([]);
@@ -111,27 +133,69 @@ export default function HomePage() {
   // 2. MAIN DASHBOARD VIEW
   if (isLoading) return <div className="p-8 flex justify-center"><LoadingSpinner /></div>;
 
-  const featuredWebsites = favoritesData?.data || [];
+  const featuredWebsites = featuredData?.data || [];
   const categories = categoryData?.data || [];
+  const allWebsites = flattenWebsites(categories);
+  // Quick access: featured + most popular + favorites (unique)
+  // Put favorites first so they appear on top
+  let quickWebsites = [
+    ...(favoritesData?.data || []),
+    ...featuredWebsites,
+    ...allWebsites.filter(w => w.popular)
+  ];
+  // Remove duplicates by id
+  quickWebsites = quickWebsites.filter((w, i, arr) => arr.findIndex(x => x.id === w.id) === i);
+  // Search filter
+  const searchLower = search.trim().toLowerCase();
+  const filteredQuick = searchLower
+    ? quickWebsites.filter(w => w.name?.toLowerCase().includes(searchLower) || w.link?.toLowerCase().includes(searchLower))
+    : quickWebsites;
+
+  // Separate favorites to display at top
+  const favoriteIds = favorites || [];
+  const filteredQuickNonFavorites = filteredQuick.filter(w => !favoriteIds.includes(w.id));
 
   return (
     <div className="min-h-screen pb-12 space-y-6">
-
-      {/* Favorites Section */}
+      {/* Favorites Section - show at very top */}
       {isClient && favorites.length > 0 && (
         <div className="px-4 pt-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Heart className="h-5 w-5 text-red-500 fill-red-500" />
-            <h1 className="text-xl font-bold text-gray-900">{isEnglish ? "Your Favorites" : "আপনার পছন্দসমূহ"}</h1>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+              <h2 className="text-2xl font-bold text-gray-900">{isEnglish ? "Your Favorites" : "আপনার পছন্দসমূহ"}</h2>
+            </div>
+            <Input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder={isEnglish ? "Search websites..." : "ওয়েবসাইট খুঁজুন..."}
+              className="max-w-xs"
+            />
           </div>
-
-          <WebsiteGrid
-            websites={featuredWebsites}
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-          />
+              <WebsiteGrid
+                websites={favoritesData?.data || []}
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                large={true}
+                showFavoriteButton={false}
+              />
         </div>
       )}
+
+      {/* Quick Access (excluding favorites already shown above) */}
+      <div className="px-4 pt-2">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-600" />
+            {isEnglish ? "Quick Access" : "দ্রুত প্রবেশাধিকার"}
+          </h1>
+        </div>
+        <WebsiteGrid
+          websites={filteredQuickNonFavorites.slice(0, 12)}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+        />
+      </div>
 
       {/* Categories Accordion Section */}
       <div className="px-4">
@@ -343,28 +407,33 @@ function Header({ icon, title, subtitle }) {
   );
 }
 
-function WebsiteGrid({ websites, limit, favorites = [], onToggleFavorite }) {
+function WebsiteGrid({ websites, limit, favorites = [], onToggleFavorite, large = false, showFavoriteButton = true }) {
   const { isEnglish, getWebsiteName, getWebsiteDescription } = useLanguage();
   const displayWebsites = limit ? websites.slice(0, limit) : websites;
 
   if (!websites || websites.length === 0) return null;
 
+  const gridClass = large ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3";
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div className={gridClass}>
       {displayWebsites.map((website) => (
-        <Card key={website.id} className="group hover:shadow-md transition-all duration-300 border-gray-200 hover:border-blue-300 h-full">
-          <CardContent className="p-3 flex flex-col h-full">
+        <Card
+          key={website.id}
+          className={`group transition-all duration-300 h-full ${large ? 'hover:shadow-lg' : 'hover:shadow-md'} border-gray-200 ${large && favorites.includes(website.id) ? 'bg-red-50 border-red-100' : ''}`}
+        >
+          <CardContent className={`${large ? 'p-4' : 'p-3'} flex flex-col h-full`}>
             <div className="flex items-start justify-between mb-2 gap-2">
-              <div className="w-8 h-8 rounded-md bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:scale-105 transition-transform shrink-0 overflow-hidden">
+              <div className={`${large ? 'w-12 h-12 rounded-lg' : 'w-8 h-8 rounded-md'} bg-gray-50 flex items-center justify-center border border-gray-100 ${large ? 'group-hover:scale-105' : 'group-hover:scale-105'} transition-transform shrink-0 overflow-hidden`}>
                 {website.icon && website.icon.startsWith('http') ? (
                   <img src={website.icon} alt={getWebsiteName(website)} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-base">{website.icon || <Globe className="w-4 h-4 text-gray-400" />}</span>
+                  <span className={`${large ? 'text-xl' : 'text-base'}`}>{website.icon || <Globe className={`${large ? 'w-5 h-5' : 'w-4 h-4'} text-gray-400`} />}</span>
                 )}
               </div>
               <div className="flex-1 min-w-0 pt-0.5">
                 <a href={website.link} target="_blank" rel="noopener noreferrer" className="block focus:outline-none">
-                  <h3 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                  <h3 className={`font-semibold ${large ? 'text-base' : 'text-sm'} text-gray-900 group-hover:text-blue-600 transition-colors truncate`}>
                     {getWebsiteName(website)}
                   </h3>
                 </a>
@@ -377,17 +446,19 @@ function WebsiteGrid({ websites, limit, favorites = [], onToggleFavorite }) {
               </div>
 
               <div className="flex flex-col gap-1 shrink-0">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if (onToggleFavorite) onToggleFavorite(website.id);
-                  }}
-                  className="p-1.5 text-gray-400 hover:text-red-500 transition-colors bg-gray-50 hover:bg-red-50 rounded-full"
-                  title={favorites.includes(website.id) ? "Remove from favorites" : "Add to favorites"}
-                >
-                  <Heart className={`w-3.5 h-3.5 ${favorites.includes(website.id) ? "fill-red-500 text-red-500" : ""}`} />
-                </button>
+                {showFavoriteButton && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      if (onToggleFavorite) onToggleFavorite(website.id);
+                    }}
+                    className={`${large ? 'p-2.5' : 'p-1.5'} text-gray-400 hover:text-red-500 transition-colors ${large ? 'bg-red-50 hover:bg-red-100' : 'bg-gray-50 hover:bg-red-50'} rounded-full`}
+                    title={favorites.includes(website.id) ? "Remove from favorites" : "Add to favorites"}
+                  >
+                    <Heart className={` ${large ? 'w-5 h-5' : 'w-3.5 h-3.5'} ${favorites.includes(website.id) ? "fill-red-500 text-red-500" : ""}`} />
+                  </button>
+                )}
                 <a href={website.link} target="_blank" rel="noopener noreferrer" className="p-1.5 text-gray-400 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-blue-50 rounded-full">
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>

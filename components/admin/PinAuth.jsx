@@ -17,7 +17,7 @@ const PinAuth = ({ onAuthenticated }) => {
   const [blockTimeLeft, setBlockTimeLeft] = useState(0);
   const { toast } = useToast();
 
-  const CORRECT_PIN = "9632";
+  const CORRECT_PIN = "2580";
   const MAX_ATTEMPTS = 3;
   const BLOCK_DURATION = 300; // 5 minutes in seconds
 

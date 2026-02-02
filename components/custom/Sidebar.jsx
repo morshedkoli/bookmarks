@@ -11,7 +11,8 @@ import {
     Menu,
     Briefcase,
     Plane,
-    Settings
+    Settings,
+    Shield
 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -80,6 +81,15 @@ export default function Sidebar({ className }) {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
+                    </div>
+
+                    <div className="mt-3 px-2">
+                        <Link href="/admin">
+                            <Button variant="outline" className="w-full justify-start font-medium">
+                                <Shield className="mr-2 h-4 w-4" />
+                                Admin
+                            </Button>
+                        </Link>
                     </div>
                 </div>
 
