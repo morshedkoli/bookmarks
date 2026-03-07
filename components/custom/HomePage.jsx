@@ -113,13 +113,13 @@ export default function HomePage() {
   if (showPopular) {
     if (isLoading) return <LoadingSpinner />;
     return (
-      <div className="min-h-screen pb-12">
+      <div className="min-h-screen pb-20">
         <Header
-          icon={<TrendingUp className="h-8 w-8 text-purple-600" />}
+          icon={<TrendingUp className="h-6 w-6 text-white" />}
           title={isEnglish ? "Most Popular" : "সবচেয়ে জনপ্রিয়"}
           subtitle={isEnglish ? "Top rated and most visited websites" : "সর্বাধিক রেট দেওয়া এবং পরিদর্শন করা ওয়েবসাইট"}
         />
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-[1400px] mx-auto px-6">
           <WebsiteGrid
             websites={popularData?.data || []}
             favorites={favorites}
@@ -156,37 +156,41 @@ export default function HomePage() {
   const filteredQuickNonFavorites = filteredQuick.filter(w => !favoriteIds.includes(w.id));
 
   return (
-    <div className="min-h-screen pb-12 space-y-6">
+    <div className="min-h-screen pb-20 space-y-16">
       {/* Favorites Section - show at very top */}
       {isClient && favorites.length > 0 && (
-        <div className="px-4 pt-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+        <div>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
             <div className="flex items-center gap-3">
-              <Heart className="h-6 w-6 text-red-500 fill-red-500" />
-              <h2 className="text-2xl font-bold text-gray-900">{isEnglish ? "Your Favorites" : "আপনার পছন্দসমূহ"}</h2>
+              <div className="p-2 bg-black rounded-xl">
+                <Heart className="h-5 w-5 text-white fill-white" />
+              </div>
+              <h2 className="text-3xl font-semibold text-gray-900 tracking-tight">{isEnglish ? "Favorites" : "পছন্দসমূহ"}</h2>
             </div>
             <Input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={isEnglish ? "Search websites..." : "ওয়েবসাইট খুঁজুন..."}
-              className="max-w-xs"
+              className="max-w-md border-gray-200 focus:border-gray-900 focus:ring-0 rounded-xl h-11"
             />
           </div>
-              <WebsiteGrid
-                websites={favoritesData?.data || []}
-                favorites={favorites}
-                onToggleFavorite={toggleFavorite}
-                large={true}
-                showFavoriteButton={false}
-              />
+          <WebsiteGrid
+            websites={favoritesData?.data || []}
+            favorites={favorites}
+            onToggleFavorite={toggleFavorite}
+            large={true}
+            showFavoriteButton={false}
+          />
         </div>
       )}
 
       {/* Quick Access (excluding favorites already shown above) */}
-      <div className="px-4 pt-2">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Globe className="h-5 w-5 text-blue-600" />
+      <div>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-semibold text-gray-900 tracking-tight flex items-center gap-3">
+            <div className="p-2 bg-black rounded-xl">
+              <Globe className="h-5 w-5 text-white" />
+            </div>
             {isEnglish ? "Quick Access" : "দ্রুত প্রবেশাধিকার"}
           </h1>
         </div>
@@ -195,49 +199,6 @@ export default function HomePage() {
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
         />
-      </div>
-
-      {/* Categories Accordion Section */}
-      <div className="px-4">
-        <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-          <LayoutGrid className="h-4 w-4 text-gray-700" />
-          {isEnglish ? "Categories" : "বিভাগসমূহ"}
-        </h2>
-
-        <Accordion type="multiple" className="space-y-4">
-          {categories.map((category) => (
-            <AccordionItem
-              key={category.id}
-              value={category.id}
-              className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden px-0"
-            >
-              <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 hover:no-underline group">
-                <div className="flex items-center gap-3 w-full text-left">
-                  <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center text-xl shrink-0 text-blue-600 transition-transform group-hover:scale-105">
-                    {category.icon}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-base text-gray-900 group-hover:text-blue-600 transition-colors truncate">
-                      {getCategoryName(category)}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate font-normal">
-                      {category.websites?.length || 0} {isEnglish ? 'websites' : 'ওয়েবসাইট'}
-                    </p>
-                  </div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="bg-gray-50/30 border-t border-gray-100 p-4">
-                <CategoryContent
-                  category={category}
-                  isEnglish={isEnglish}
-                  getCategoryName={getCategoryName}
-                  favorites={favorites}
-                  onToggleFavorite={toggleFavorite}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </div>
   );
@@ -250,37 +211,41 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
   if (category.countries && category.countries.length > 0) {
     return (
       <div className="space-y-4">
-        {category.countries.map(country => (
-          <Accordion key={country.id} type="single" collapsible className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <AccordionItem value={country.id} className="border-none">
-              <AccordionTrigger className="px-4 py-3 hover:bg-gray-50 hover:no-underline">
-                <div className="flex items-center gap-3 text-left w-full">
-                  <span className="text-2xl shrink-0">{country.icon || '🏳️'}</span>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-bold text-gray-900">
-                      {isEnglish ? country.name : (country.nameBn || country.name)}
-                    </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {category.countries.map(country => (
+            <Accordion key={country.id} type="single" collapsible className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <AccordionItem value={country.id} className="border-none">
+                <AccordionTrigger className="px-5 py-4 hover:bg-gray-50/50 hover:no-underline [&[data-state=open]]:bg-gray-50">
+                  <div className="flex items-center gap-3 text-left w-full">
+                    <span className="text-2xl shrink-0">{country.icon || '🏳️'}</span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-medium text-gray-900 truncate">
+                        {isEnglish ? country.name : (country.nameBn || country.name)}
+                      </h3>
+                    </div>
+                    <ChevronDown className="h-4 w-4 text-gray-400 shrink-0 transition-transform duration-200" />
                   </div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="bg-gray-50 border-t border-gray-100">
-                <div className="p-4">
-                  <CountryContent
-                    country={country}
-                    websites={category.websites || []}
-                    favorites={favorites}
-                    onToggleFavorite={onToggleFavorite}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ))}
+                </AccordionTrigger>
+                <AccordionContent className="bg-gray-50/40 border-t border-gray-100">
+                  <div className="p-5">
+                    <CountryContent
+                      country={country}
+                      websites={category.websites || []}
+                      favorites={favorites}
+                      onToggleFavorite={onToggleFavorite}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))}
+        </div>
 
         {/* Fallback for Global websites in this category */}
         {category.websites && category.websites.some(w => !w.countryId) && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3">
+          <div className="mt-8 pt-8 border-t border-gray-100">
+            <h4 className="text-base font-medium text-gray-900 mb-5 flex items-center gap-2">
+              <span className="w-1 h-5 bg-black rounded-full"></span>
               {isEnglish ? "Other Services" : "অন্যান্য সেবা"}
             </h4>
             <WebsiteGrid
@@ -297,13 +262,18 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
   // 2. SUB-CATEGORIES VIEW
   if (category.children && category.children.length > 0) {
     return (
-      <div className="space-y-8">
+      <div className="space-y-12">
         {category.children.map(subCat => (
-          <div key={subCat.id}>
-            <h3 className="text-sm font-bold text-gray-700 mb-3 pb-2 border-b border-gray-200 flex items-center gap-2">
-              <span className="text-lg">{subCat.icon}</span>
-              {getCategoryName(subCat)}
-            </h3>
+          <div key={subCat.id} className="relative">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">
+                {subCat.icon}
+              </div>
+              <h3 className="text-lg font-medium text-gray-900">
+                {getCategoryName(subCat)}
+              </h3>
+              <div className="flex-1 h-px bg-gray-100 ml-4"></div>
+            </div>
             {subCat.websites && subCat.websites.length > 0 ? (
               <WebsiteGrid
                 websites={subCat.websites}
@@ -311,16 +281,24 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
                 onToggleFavorite={onToggleFavorite}
               />
             ) : (
-              <div className="text-gray-400 italic text-xs">No websites yet.</div>
+              <div className="text-gray-400 italic text-sm py-8 text-center bg-gray-50/50 rounded-xl">
+                {isEnglish ? "No websites yet" : "এখনো কোন ওয়েবসাইট নেই"}
+              </div>
             )}
           </div>
         ))}
 
         {category.websites && category.websites.length > 0 && (
-          <div>
-            <h3 className="text-sm font-bold text-gray-700 mb-3 pb-2 border-b border-gray-200">
-              {isEnglish ? "General Resources" : "সাধারণ রিসোর্স"}
-            </h3>
+          <div className="relative pt-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                <Globe className="w-5 h-5 text-gray-600" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900">
+                {isEnglish ? "General Resources" : "সাধারণ রিসোর্স"}
+              </h3>
+              <div className="flex-1 h-px bg-gray-100 ml-4"></div>
+            </div>
             <WebsiteGrid
               websites={category.websites}
               favorites={favorites}
@@ -352,13 +330,16 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
 
   if (hasGroups) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-10">
         {Object.entries(groupedWebsites).map(([groupName, sites]) => (
-          <div key={groupName}>
-            <h3 className="text-sm font-bold text-gray-700 mb-3 pb-2 border-b border-gray-200 flex items-center gap-2">
-              <span className="w-1.5 h-4 bg-blue-500 rounded-full"></span>
-              {groupName}
-            </h3>
+          <div key={groupName} className="relative">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-1 h-6 bg-black rounded-full"></span>
+              <h3 className="text-base font-medium text-gray-900">
+                {groupName}
+              </h3>
+              <div className="flex-1 h-px bg-gray-100 ml-4"></div>
+            </div>
             <WebsiteGrid
               websites={sites}
               favorites={favorites}
@@ -367,10 +348,14 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
           </div>
         ))}
         {ungroupedWebsites.length > 0 && (
-          <div>
-            <h3 className="text-sm font-bold text-gray-700 mb-3 pb-2 border-b border-gray-200">
-              {isEnglish ? "Other Services" : "অন্যান্য সেবা"}
-            </h3>
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-1 h-6 bg-black rounded-full"></span>
+              <h3 className="text-base font-medium text-gray-900">
+                {isEnglish ? "Other Services" : "অন্যান্য সেবা"}
+              </h3>
+              <div className="flex-1 h-px bg-gray-100 ml-4"></div>
+            </div>
             <WebsiteGrid
               websites={ungroupedWebsites}
               favorites={favorites}
@@ -395,13 +380,15 @@ function CategoryContent({ category, isEnglish, getCategoryName, favorites, onTo
 // Sub-components
 function Header({ icon, title, subtitle }) {
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-6 mb-4">
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          {icon}
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{title}</h1>
+    <div className="bg-white border-b border-gray-100 px-6 py-10 mb-8">
+      <div className="space-y-3">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-black rounded-xl">
+            {icon}
+          </div>
+          <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">{title}</h1>
         </div>
-        <p className="text-sm text-gray-500">{subtitle}</p>
+        <p className="text-base text-gray-500 ml-16">{subtitle}</p>
       </div>
     </div>
   );
@@ -413,39 +400,26 @@ function WebsiteGrid({ websites, limit, favorites = [], onToggleFavorite, large 
 
   if (!websites || websites.length === 0) return null;
 
-  const gridClass = large ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3";
+  const gridClass = large ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3";
 
   return (
     <div className={gridClass}>
       {displayWebsites.map((website) => (
         <Card
           key={website.id}
-          className={`group transition-all duration-300 h-full ${large ? 'hover:shadow-lg' : 'hover:shadow-md'} border-gray-200 ${large && favorites.includes(website.id) ? 'bg-red-50 border-red-100' : ''}`}
+          className={`group transition-all duration-200 h-full border-gray-100 hover:border-gray-900 hover:shadow-sm ${large ? 'rounded-2xl' : 'rounded-xl'} ${large && favorites.includes(website.id) ? 'bg-gray-50 border-gray-200' : 'bg-white'}`}
         >
-          <CardContent className={`${large ? 'p-4' : 'p-3'} flex flex-col h-full`}>
-            <div className="flex items-start justify-between mb-2 gap-2">
-              <div className={`${large ? 'w-12 h-12 rounded-lg' : 'w-8 h-8 rounded-md'} bg-gray-50 flex items-center justify-center border border-gray-100 ${large ? 'group-hover:scale-105' : 'group-hover:scale-105'} transition-transform shrink-0 overflow-hidden`}>
+          <CardContent className={`${large ? 'p-5' : 'p-4'} flex flex-col h-full`}>
+            <div className="flex items-start justify-between mb-3 gap-3">
+              <div className={`${large ? 'w-14 h-14 rounded-xl' : 'w-10 h-10 rounded-lg'} bg-gray-50/80 flex items-center justify-center border border-gray-100 shrink-0 overflow-hidden transition-transform group-hover:scale-105`}>
                 {website.icon && website.icon.startsWith('http') ? (
                   <img src={website.icon} alt={getWebsiteName(website)} className="w-full h-full object-cover" />
                 ) : (
-                  <span className={`${large ? 'text-xl' : 'text-base'}`}>{website.icon || <Globe className={`${large ? 'w-5 h-5' : 'w-4 h-4'} text-gray-400`} />}</span>
+                  <span className={`${large ? 'text-2xl' : 'text-lg'}`}>{website.icon || <Globe className={`${large ? 'w-6 h-6' : 'w-5 h-5'} text-gray-300`} />}</span>
                 )}
               </div>
-              <div className="flex-1 min-w-0 pt-0.5">
-                <a href={website.link} target="_blank" rel="noopener noreferrer" className="block focus:outline-none">
-                  <h3 className={`font-semibold ${large ? 'text-base' : 'text-sm'} text-gray-900 group-hover:text-blue-600 transition-colors truncate`}>
-                    {getWebsiteName(website)}
-                  </h3>
-                </a>
-                {website.popular && (
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <TrendingUp className="w-2.5 h-2.5 text-purple-600" />
-                    <span className="text-[9px] uppercase font-bold text-purple-600 tracking-wide">Popular</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-1 shrink-0">
+              
+              <div className="flex gap-1.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 {showFavoriteButton && (
                   <button
                     onClick={(e) => {
@@ -453,21 +427,33 @@ function WebsiteGrid({ websites, limit, favorites = [], onToggleFavorite, large 
                       e.preventDefault();
                       if (onToggleFavorite) onToggleFavorite(website.id);
                     }}
-                    className={`${large ? 'p-2.5' : 'p-1.5'} text-gray-400 hover:text-red-500 transition-colors ${large ? 'bg-red-50 hover:bg-red-100' : 'bg-gray-50 hover:bg-red-50'} rounded-full`}
+                    className={`p-2 text-gray-400 hover:text-black transition-colors bg-gray-50 hover:bg-gray-100 rounded-lg`}
                     title={favorites.includes(website.id) ? "Remove from favorites" : "Add to favorites"}
                   >
-                    <Heart className={` ${large ? 'w-5 h-5' : 'w-3.5 h-3.5'} ${favorites.includes(website.id) ? "fill-red-500 text-red-500" : ""}`} />
+                    <Heart className={`w-4 h-4 ${favorites.includes(website.id) ? "fill-black text-black" : ""}`} />
                   </button>
                 )}
-                <a href={website.link} target="_blank" rel="noopener noreferrer" className="p-1.5 text-gray-400 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-blue-50 rounded-full">
-                  <ExternalLink className="w-3.5 h-3.5" />
+                <a href={website.link} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-black transition-colors bg-gray-50 hover:bg-gray-100 rounded-lg">
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
-            <p className="text-xs text-gray-500 line-clamp-1 flex-1">
-              {getWebsiteDescription(website) || (isEnglish ? "No description available." : "কোন বিবরণ উপলব্ধ নেই।")}
-            </p>
+            <div className="flex-1 min-w-0">
+              <a href={website.link} target="_blank" rel="noopener noreferrer" className="block focus:outline-none group/link">
+                <h3 className={`font-medium ${large ? 'text-base' : 'text-sm'} text-gray-900 group-hover/link:text-gray-600 transition-colors line-clamp-1 mb-1`}>
+                  {getWebsiteName(website)}
+                </h3>
+              </a>
+              {website.popular && (
+                <div className="flex items-center gap-1 mb-2">
+                  <span className="px-2 py-0.5 text-[10px] font-medium text-gray-600 bg-gray-100 rounded-md uppercase tracking-wide">Popular</span>
+                </div>
+              )}
+              <p className={`${large ? 'text-sm' : 'text-xs'} text-gray-400 line-clamp-2 leading-relaxed`}>
+                {getWebsiteDescription(website) || (isEnglish ? "No description" : "কোন বিবরণ নেই")}
+              </p>
+            </div>
           </CardContent>
         </Card>
       ))}
@@ -481,7 +467,11 @@ function CountryContent({ country, websites, favorites, onToggleFavorite }) {
   const countrySites = websites.filter(w => w.countryId === country.id);
 
   if (countrySites.length === 0) {
-    return <div className="text-gray-500 italic text-center">No links available yet.</div>;
+    return (
+      <div className="text-gray-400 italic text-center text-sm py-8 bg-gray-50/50 rounded-xl">
+        No links available yet.
+      </div>
+    );
   }
 
   // Group by subGroup (Embassy, Visa, etc.)
@@ -498,12 +488,16 @@ function CountryContent({ country, websites, favorites, onToggleFavorite }) {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {Object.entries(sections).map(([sectionName, sites]) => (
-        <div key={sectionName}>
-          <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 border-b border-gray-200 pb-1">
-            {sectionName}
-          </h4>
+        <div key={sectionName} className="relative">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-1 h-5 bg-black rounded-full"></span>
+            <h4 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+              {sectionName}
+            </h4>
+            <div className="flex-1 h-px bg-gray-100 ml-3"></div>
+          </div>
           <WebsiteGrid
             websites={sites}
             favorites={favorites}
@@ -513,11 +507,15 @@ function CountryContent({ country, websites, favorites, onToggleFavorite }) {
       ))}
 
       {others.length > 0 && (
-        <div>
+        <div className="relative">
           {Object.keys(sections).length > 0 && (
-            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 border-b border-gray-200 pb-1">
-              General
-            </h4>
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-1 h-5 bg-black rounded-full"></span>
+              <h4 className="text-sm font-medium text-gray-900 uppercase tracking-wider">
+                General
+              </h4>
+              <div className="flex-1 h-px bg-gray-100 ml-3"></div>
+            </div>
           )}
           <WebsiteGrid
             websites={others}

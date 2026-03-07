@@ -16,17 +16,17 @@ const MenubarApp = ({ onToggleSidebar, isSidebarOpen }) => {
   const router = useRouter();
 
   return (
-    <nav className="bg-white border-b border-gray-200 h-16 sticky top-0 z-30 w-full">
-      <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <nav className="bg-white border-b border-gray-100 h-16 sticky top-0 z-30 w-full backdrop-blur-sm bg-white/90">
+      <div className="h-full px-6 sm:px-8 lg:px-12 flex items-center justify-between">
         {/* Toggle button (Visible on Desktop now too for sidebar toggle) */}
         <div className="flex items-center">
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggleSidebar || (() => setIsMobileMenuOpen(!isMobileMenuOpen))}
-            className="text-gray-500 mr-2"
+            className="text-gray-600 hover:text-gray-900 mr-2"
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </Button>
           <div className="md:hidden">
             {/* Mobile specific logic if needed, but the main button serves both if handled by parent */}
@@ -46,7 +46,7 @@ const MenubarApp = ({ onToggleSidebar, isSidebarOpen }) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search websites..."
-              className="max-w-xs"
+              className="max-w-xs h-10 border-gray-200 focus:border-gray-900 focus:ring-0 rounded-xl"
               icon={<SearchIcon className="w-4 h-4 text-gray-400" />}
             />
           </form>
@@ -55,14 +55,14 @@ const MenubarApp = ({ onToggleSidebar, isSidebarOpen }) => {
 
           <a
             href="tel:01781981486"
-            className="flex items-center px-3 py-2 rounded-full bg-green-50 text-green-700 hover:bg-green-100 transition-colors text-sm font-medium"
+            className="flex items-center px-4 py-2 rounded-xl bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors text-sm font-medium"
           >
             <Phone className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">01781981486</span>
           </a>
 
           <Link href="/admin">
-            <Button variant="outline" className="inline-flex items-center gap-2">
+            <Button variant="outline" className="inline-flex items-center gap-2 rounded-xl border-gray-200 hover:bg-gray-50">
               <Shield className="h-4 w-4" />
               Admin
             </Button>
@@ -100,6 +100,7 @@ const MenubarApp = ({ onToggleSidebar, isSidebarOpen }) => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search websites..."
+                  className="rounded-xl"
                 />
               </form>
               <Sidebar className="border-none w-full min-h-full" />

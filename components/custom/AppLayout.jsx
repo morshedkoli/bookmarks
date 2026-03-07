@@ -8,10 +8,10 @@ export default function AppLayout({ children }) {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-white">
             {/* Desktop Sidebar: Conditionally render or hide via CSS width */}
             <div
-                className={`hidden md:block shrink-0 transition-all duration-300 ease-in-out border-r border-gray-200 bg-white ${isSidebarOpen ? 'w-72 opacity-100' : 'w-0 opacity-0 overflow-hidden'
+                className={`hidden md:block shrink-0 transition-all duration-300 ease-in-out border-r border-gray-100 bg-white ${isSidebarOpen ? 'w-72 opacity-100' : 'w-0 opacity-0 overflow-hidden'
                     }`}
             >
                 <Suspense fallback={<div className="h-full w-full bg-white loading-sidebar" />}>
